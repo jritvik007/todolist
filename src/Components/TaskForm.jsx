@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 function TaskForm({ onSubmit, taskToEdit }) {
   const navigate = useNavigate();
 
-
   const [task, setTask] = useState({
     name: '', email: '', phone: '', department: '',
     position: '', taskName: '', assignedBy: '',
@@ -92,7 +91,7 @@ function TaskForm({ onSubmit, taskToEdit }) {
       <CssBaseline />
       <AppBar position="fixed" sx={{ backgroundColor: '#1976d2' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6">ToDo-List</Typography>
+          <Typography variant="h6">ToDoList</Typography>
           <IconButton color="inherit" onClick={() => navigate('/dashboard')}>
             <ArrowBackIcon />
           </IconButton>

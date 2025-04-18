@@ -1,4 +1,11 @@
-import { Grid, Paper, Typography, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Grid,
+  Paper,
+  Typography,
+  IconButton,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid } from '@mui/x-data-grid';
@@ -11,6 +18,8 @@ function TaskTable() {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isCardView = isMobile || isTablet;
 
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -72,13 +81,13 @@ function TaskTable() {
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
-      {isMobile ? (
+      {isCardView ? (
         tasks.map((task, index) => (
-          <Grid item xs={11} key={index}>
+          <Grid item xs={12} sm={6} key={index}>
             <Paper sx={{ p: 2 }}>
               {Object.entries(task).map(([key, value]) => {
                 if (key === 'id') return null;
-                if (key === 'taskName') key = 'Task';
+                const label = key === 'taskName' ? 'Task' : key.charAt(0).toUpperCase() + key.slice(1);
                 if (key === 'status') {
                   return (
                     <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
@@ -91,7 +100,7 @@ function TaskTable() {
                 }
                 return (
                   <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
-                    {key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
+                    {label}:{' '}
                     <span style={{ fontWeight: 400 }}>{value}</span>
                   </Typography>
                 );

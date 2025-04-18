@@ -85,7 +85,7 @@ function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            ToDo Dashboard
+            Dashboard
           </Typography>
           {user && (
             <Typography sx={{ flexGrow: 0, marginLeft: 2 }}>
