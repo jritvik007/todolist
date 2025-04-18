@@ -6,15 +6,18 @@ import { CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import reportWebVitals from './reportWebVitals';
+import { CustomThemeProvider } from './Context/ThemeContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode> 
+    <CustomThemeProvider>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <CssBaseline />
       <App />
     </LocalizationProvider>
+    </CustomThemeProvider>
   </React.StrictMode>
 );
 

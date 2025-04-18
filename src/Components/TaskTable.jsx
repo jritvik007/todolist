@@ -29,16 +29,30 @@ function TaskTable() {
   };
 
   const columns = [
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'phone', headerName: 'Phone', width: 150 },
-    { field: 'department', headerName: 'Department', width: 150 },
-    { field: 'position', headerName: 'Position', width: 150 },
-    { field: 'taskName', headerName: 'Task', width: 200 },
-    { field: 'assignedBy', headerName: 'Assigned By', width: 180 },
-    { field: 'startDate', headerName: 'Start', width: 150 },
-    { field: 'deadline', headerName: 'Deadline', width: 150 },
-    { field: 'status', headerName: 'Status', width: 120 },
+    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'phone', headerName: 'Phone', flex: 1 },
+    { field: 'department', headerName: 'Department', flex: 1 },
+    { field: 'position', headerName: 'Position', flex: 1 },
+    { field: 'taskName', headerName: 'Task', flex: 1 },
+    { field: 'assignedBy', headerName: 'Assigned By', flex: 1 },
+    { field: 'startDate', headerName: 'Start', flex: 1 },
+    { field: 'deadline', headerName: 'Deadline', flex: 1 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
+        <span
+          style={{
+            color: params.value === 'Completed' ? 'green' : 'red',
+            fontWeight: 'bold',
+          }}
+        >
+          {params.value}
+        </span>
+      ),
+    },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -60,11 +74,21 @@ function TaskTable() {
     <Grid container spacing={2} sx={{ p: 2 }}>
       {isMobile ? (
         tasks.map((task, index) => (
-          <Grid item xs={12} key={index}>
+          <Grid item xs={11} key={index}>
             <Paper sx={{ p: 2 }}>
               {Object.entries(task).map(([key, value]) => {
                 if (key === 'id') return null;
                 if (key === 'taskName') key = 'Task';
+                if (key === 'status') {
+                  return (
+                    <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
+                      Status:{' '}
+                      <span style={{ color: value === 'Completed' ? 'green' : 'red', fontWeight: 600 }}>
+                        {value}
+                      </span>
+                    </Typography>
+                  );
+                }
                 return (
                   <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
                     {key.charAt(0).toUpperCase() + key.slice(1)}:{' '}
@@ -99,7 +123,7 @@ function TaskTable() {
                 fontWeight: 'bold',
               },
               '& .MuiDataGrid-cell': {
-                textAlign: 'center',
+                textAlign: 'left',
               },
               '& .MuiDataGrid-columnHeaderTitle': {
                 fontWeight: 700,

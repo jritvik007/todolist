@@ -1,42 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List,
-  ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar,
-  Typography, Container, Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import LogoutIcon from "@mui/icons-material/Logout";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import {
+  Box,
+  CssBaseline,
+  AppBar as MuiAppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
+const Main = styled("main")(() => ({
+  flexGrow: 1,
+  padding: "24px",
+}));
+
+const AppBar = styled(MuiAppBar)(() => ({
+  zIndex: 1301,
+}));
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));
+
 function PendingTasks() {
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
+  const [pendingTasks, setPendingTasks] = useState([]);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  const [open, setOpen] = useState(true);
-  const [pendingTasks, setPendingTasks] = useState([]);
 
-  const handleDrawerToggle = () => {
-    setOpen(!open);
-    setTimeout(() => {
-      window.dispatchEvent(new Event("resize"));
-    }, 300);
-  };
-
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
     navigate("/login");
   };
-
-  const drawerItems = [
-    { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    { text: "Completed Tasks", icon: <CheckCircleIcon />, path: "/completed" },
-    { text: "Pending Tasks", icon: <HourglassEmptyIcon />, path: "/pending" },
-  ];
 
   useEffect(() => {
     const allTasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -45,6 +62,12 @@ function PendingTasks() {
     );
     setPendingTasks(filtered.map((task, index) => ({ id: index + 1, ...task })));
   }, []);
+
+  const drawerItems = [
+    { text: "Dashboard", path: "/dashboard" },
+    { text: "Completed Tasks", path: "/completed" },
+    { text: "Pending Tasks", path: "/pending" },
+  ];
 
   const columns = [
     { field: "name", headerName: "Name", flex: 1 },
@@ -62,109 +85,83 @@ function PendingTasks() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
-          ml: open ? `${drawerWidth}px` : 0,
-          transition: "width 0.3s, margin 0.3s",
-        }}
-      >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconButton
-              color="inherit"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              Pending Tasks
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Typography variant="body1">Welcome, {user?.email}</Typography>
-            <IconButton color="inherit" onClick={handleLogout}>
-              <LogoutIcon />
-            </IconButton>
-          </Box>
+      <AppBar position="fixed">
+        <Toolbar>
+          <IconButton color="inherit" onClick={handleDrawerOpen} edge="start" sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Pending Tasks
+          </Typography>
+          {user && <Typography>{user.email}</Typography>}
         </Toolbar>
       </AppBar>
 
       <Drawer
-        variant="persistent"
-        anchor="left"
+        variant="temporary"
         open={open}
+        onClose={handleDrawerClose}
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
+          "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
           },
         }}
       >
-        <Toolbar sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <IconButton onClick={handleDrawerToggle}>
-            <ChevronLeftIcon />
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
-        </Toolbar>
+        </DrawerHeader>
         <Divider />
         <List>
-          {drawerItems.map(({ text, icon, path }) => (
+          {drawerItems.map(({ text, path }) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => navigate(path)}>
-                <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemButton
+                onClick={() => {
+                  navigate(path);
+                  handleDrawerClose();
+                }}
+              >
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Drawer>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
-          transition: "width 0.3s",
-          minWidth: 0, 
-        }}
-      >
-        <Fab
-          color="primary"
-          onClick={() => navigate("/add")}
-          sx={{ position: "fixed", bottom: 16, right: 16 }}
-          aria-label="add"
-          title="Add Task"
-        >
-          <AddIcon />
-        </Fab>
-        <Toolbar />
-        <Container maxWidth="md">
-          <Box sx={{ width: "100%" }}>
-            <DataGrid
-              rows={pendingTasks}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10, 25, 50]}
-              disableSelectionOnClick
-              autoHeight
-              sx={{
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: "#f5f5f5",
-                  fontWeight: "bold",
-                },
-              }}
-            />
-          </Box>
-        </Container>
-      </Box>
+      <Main>
+        <DrawerHeader />
+        <Box sx={{ width: "100%" }}>
+          <DataGrid
+            rows={pendingTasks}
+            columns={columns}
+            pageSize={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            autoHeight
+            disableSelectionOnClick
+            sx={{
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: "#f5f5f5",
+                fontWeight: "bold",
+              },
+            }}
+          />
+        </Box>
+      </Main>
     </Box>
   );
 }
 
-export default PendingTasks;
+export default PendingTasks

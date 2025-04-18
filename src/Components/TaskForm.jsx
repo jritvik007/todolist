@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, CssBaseline, Box, Container, Paper,
-  Button, TextField, MenuItem, Grid, IconButton } from '@mui/material';
+import {
+  AppBar, Toolbar, Typography, CssBaseline, Box, Container, Paper,
+  Button, TextField, MenuItem, Grid, IconButton, Divider
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import { useNavigate } from 'react-router-dom';
 
 function TaskForm({ onSubmit, taskToEdit }) {
   const navigate = useNavigate();
+
 
   const [task, setTask] = useState({
     name: '', email: '', phone: '', department: '',
@@ -88,92 +92,152 @@ function TaskForm({ onSubmit, taskToEdit }) {
       <CssBaseline />
       <AppBar position="fixed" sx={{ backgroundColor: '#1976d2' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" component="div">
-            ToDo-List
-          </Typography>
+          <Typography variant="h6">ToDo-List</Typography>
           <IconButton color="inherit" onClick={() => navigate('/dashboard')}>
             <ArrowBackIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ marginTop: '90px', paddingBottom: '50px' }}>
+      <Box sx={{ marginTop: '100px', paddingBottom: '50px' }}>
         <Container maxWidth="md">
-          <Paper elevation={3} sx={{ padding: 4 }}>
-            <Typography variant="h5" gutterBottom textAlign="center">
+          <Paper elevation={4} sx={{ borderRadius: 4, padding: { xs: 3, sm: 4 }, backgroundColor: '#fafafa' }}>
+            <Typography variant="h5" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>
               {taskToEdit ? 'Edit Task' : 'Add New Task'}
             </Typography>
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
 
+            <form onSubmit={handleSubmit}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>Employee Info</Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
+                {[
+                  { label: "Name", name: "name" },
+                  { label: "Email", name: "email", type: "email" },
+                  { label: "Phone", name: "phone", type: "tel" },
+                  { label: "Department", name: "department" },
+                  { label: "Position", name: "position" },
+                ].map(({ label, name, type = "text" }) => (
+                  <Grid item xs={12} sm={6} key={name}>
+                    <TextField
+                      required
+                      fullWidth
+                      type={type}
+                      label={label}
+                      name={name}
+                      value={task[name]}
+                      onChange={handleChange}
+                      error={!!errors[name]}
+                      helperText={errors[name]}
+                      inputProps={name === "phone" ? { maxLength: 10 } : {}}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mt: 4, mb: 1 }}>Task Info</Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField required label="Name" name="name" fullWidth value={task.name} onChange={handleChange} error={!!errors.name} helperText={errors.name} />
+                  <TextField
+                    required
+                    fullWidth
+                    label="Task Name"
+                    name="taskName"
+                    value={task.taskName}
+                    onChange={handleChange}
+                    error={!!errors.taskName}
+                    helperText={errors.taskName}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField required label="Email" name="email" type="email" fullWidth value={task.email} onChange={handleChange} error={!!errors.email} helperText={errors.email} />
+                  <TextField
+                    required
+                    fullWidth
+                    label="Assigned By"
+                    name="assignedBy"
+                    value={task.assignedBy}
+                    onChange={handleChange}
+                    error={!!errors.assignedBy}
+                    helperText={errors.assignedBy}
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField required label="Phone" name="phone" type="tel" inputProps={{ maxLength: 10 }} fullWidth value={task.phone} onChange={handleChange} error={!!errors.phone} helperText={errors.phone} />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField required label="Department" name="department" fullWidth value={task.department} onChange={handleChange} error={!!errors.department} helperText={errors.department} />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField required label="Position" name="position" fullWidth value={task.position} onChange={handleChange} error={!!errors.position} helperText={errors.position} />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField required label="Task" name="taskName" fullWidth value={task.taskName} onChange={handleChange} error={!!errors.taskName} helperText={errors.taskName} />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField required label="Assigned By" name="assignedBy" fullWidth value={task.assignedBy} onChange={handleChange} error={!!errors.assignedBy} helperText={errors.assignedBy} />
-                </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     label="Start Date"
                     value={task.startDate}
                     onChange={(date) => handleDateChange("startDate", date)}
-                    renderInput={(params) => <TextField {...params} required fullWidth error={!!errors.startDate} helperText={errors.startDate} />}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                        fullWidth: true,
+                        error: !!errors.startDate,
+                        helperText: errors.startDate,
+                      }
+                    }}
                   />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     label="Deadline"
                     value={task.deadline}
                     onChange={(date) => handleDateChange("deadline", date)}
-                    renderInput={(params) => <TextField {...params} required fullWidth error={!!errors.deadline} helperText={errors.deadline} />}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                        fullWidth: true,
+                        error: !!errors.deadline,
+                        helperText: errors.deadline,
+                      }
+                    }}
                   />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
-                  <TextField select label="Status" name="status" fullWidth value={task.status} onChange={handleChange}>
+                  <TextField
+                    select
+                    label="Status"
+                    name="status"
+                    fullWidth
+                    value={task.status}
+                    onChange={handleChange}
+                  >
                     <MenuItem value="Pending">Pending</MenuItem>
                     <MenuItem value="Completed">Completed</MenuItem>
                   </TextField>
                 </Grid>
-
-                <Grid item xs={12}>
-                  <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      sx={{
-                        px: 4,
-                        py: 1.5,
-                        textTransform: 'none',
-                        fontWeight: 'bold',
-                        '&:hover': {
-                          backgroundColor: '#1565c0'
-                        },
-                        mt: 3,
-                        marginLeft: '180px'
-                      }}
-                    >
-                      {taskToEdit ? 'Update Task' : 'Add Task'}
-                    </Button>
-                  </Box>
-                </Grid>
               </Grid>
+
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ mt: 5 }}
+              >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  startIcon={<AssignmentIcon />}
+                  size="large"
+                  sx={{
+                    textTransform: 'none',
+                    fontWeight: 'bold',
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: 3,
+                    backgroundColor: '#1976d2',
+                    '&:hover': {
+                      backgroundColor: '#1565c0'
+                    },
+                    width: { xs: '100%', sm: '60%', md: '40%' }
+                  }}
+                >
+                  {taskToEdit ? 'Update Task' : 'Add Task'}
+                </Button>
+              </Box>
             </form>
           </Paper>
         </Container>
