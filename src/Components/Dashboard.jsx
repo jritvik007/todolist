@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,8 +12,6 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -21,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import TaskTable from "./TaskTable";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LightModeIcon from "@mui/icons-material/LightMode";
+import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { ThemeModeContext } from "../Context/ThemeContext";
 
@@ -45,7 +43,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 function Dashboard() {
-  const theme = useTheme();
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -117,11 +115,7 @@ function Dashboard() {
         open={open}
         onClose={handleDrawerClose}
       >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
+        <DrawerHeader/>
         <Divider />
         <List>
           {drawerItems.map(({ text, path }) => (
@@ -154,13 +148,14 @@ function Dashboard() {
         <DrawerHeader />
         <TaskTable />
         <Fab
-          color="primary"
+          variant="extended" color="primary" size="large"
           onClick={() => navigate("/add")}
           sx={{ position: "fixed", bottom: 16, right: 16 }}
           aria-label="add"
           title="Add Task"
         >
           <AddIcon />
+          Add Task
         </Fab>
       </Main>
     </Box>

@@ -8,12 +8,26 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { useNavigate } from 'react-router-dom';
 
+const locations = {
+  USA: {
+    California: ['Los Angeles', 'San Diego', 'San Francisco'],
+    Texas: ['Houston', 'Austin', 'Dallas'],
+    'New York': ['New York City', 'Buffalo', 'Rochester']
+  },
+  India: {
+    Maharashtra: ['Mumbai', 'Pune', 'Nagpur'],
+    Karnataka: ['Bengaluru', 'Mysuru', 'Mangalore'],
+    'Uttar Pradesh': ['Lucknow', 'Kanpur', 'Agra']
+  }
+};
+
 function TaskForm({ onSubmit, taskToEdit }) {
   const navigate = useNavigate();
 
   const [task, setTask] = useState({
     name: '', email: '', phone: '', department: '',
-    position: '', taskName: '', assignedBy: '',
+    position: '', country: '', state: '', city: '',
+    taskName: '', assignedBy: '',
     startDate: null, deadline: null, status: 'Pending'
   });
 
@@ -27,14 +41,26 @@ function TaskForm({ onSubmit, taskToEdit }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "phone") {
+
+    const updatedTask = { ...task, [name]: value };
+
+    if (name === 'country') {
+      updatedTask.state = '';
+      updatedTask.city = '';
+    } else if (name === 'state') {
+      updatedTask.city = '';
+    }
+
+    if (name === 'phone') {
       const digitsOnly = value.replace(/\D/g, '');
       if (digitsOnly.length <= 10) {
-        setTask({ ...task, [name]: digitsOnly });
+        updatedTask[name] = digitsOnly;
+      } else {
+        return;
       }
-    } else {
-      setTask({ ...task, [name]: value });
     }
+
+    setTask(updatedTask);
     setErrors({ ...errors, [name]: '' });
   };
 
@@ -45,10 +71,13 @@ function TaskForm({ onSubmit, taskToEdit }) {
 
   const validate = () => {
     const newErrors = {};
-    const requiredFields = ["name", "email", "phone", "department", "position", "taskName", "assignedBy"];
+    const requiredFields = [
+      'name', 'email', 'phone', 'department', 'position',
+      'country', 'state', 'city', 'taskName', 'assignedBy'
+    ];
 
     requiredFields.forEach(field => {
-      if (!task[field].trim()) {
+      if (!task[field]?.trim()) {
         newErrors[field] = 'This field is required';
       }
     });
@@ -100,7 +129,7 @@ function TaskForm({ onSubmit, taskToEdit }) {
 
       <Box sx={{ marginTop: '100px', paddingBottom: '50px' }}>
         <Container maxWidth="md">
-          <Paper elevation={4} sx={{ borderRadius: 4, padding: { xs: 3, sm: 4 }, backgroundColor: '#fafafa' }}>
+          <Paper elevation={4} sx={{ borderRadius: 4, padding: { xs: 6, sm: 4 }, backgroundColor: (theme) => theme.palette.background.default }}>
             <Typography variant="h5" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>
               {taskToEdit ? 'Edit Task' : 'Add New Task'}
             </Typography>
@@ -115,12 +144,12 @@ function TaskForm({ onSubmit, taskToEdit }) {
                   { label: "Email", name: "email", type: "email" },
                   { label: "Phone", name: "phone", type: "tel" },
                   { label: "Department", name: "department" },
-                  { label: "Position", name: "position" },
+                  { label: "Position", name: "position" }
                 ].map(({ label, name, type = "text" }) => (
-                  <Grid item xs={12} sm={6} key={name}>
+                  <Grid item xs={12} sm={6} key={name} sx={{minWidth: '245px'}}>
                     <TextField
-                      required
                       fullWidth
+                      required
                       type={type}
                       label={label}
                       name={name}
@@ -128,20 +157,76 @@ function TaskForm({ onSubmit, taskToEdit }) {
                       onChange={handleChange}
                       error={!!errors[name]}
                       helperText={errors[name]}
-                      inputProps={name === "phone" ? { maxLength: 10 } : {}}
+                      slotProps={name === "phone" ? { maxLength: 10 } : {}}
                     />
                   </Grid>
                 ))}
+
+                <Grid item xs={12} sm={6} sx={{minWidth: '245px'}}>
+                  <TextField
+                    select
+                    required
+                    fullWidth
+                    label="Country"
+                    name="country"
+                    value={task.country}
+                    onChange={handleChange}
+                    error={!!errors.country}
+                    helperText={errors.country}
+                  >
+                    {Object.keys(locations).map((country) => (
+                      <MenuItem key={country} value={country}>{country}</MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} sm={6} sx={{minWidth: '245px'}}>
+                  <TextField 
+                    select
+                    required
+                    fullWidth
+                    label="State"
+                    name="state"
+                    value={task.state}
+                    onChange={handleChange}
+                    error={!!errors.state}
+                    helperText={errors.state}
+                    disabled={!task.country}
+                  >
+                    {task.country && Object.keys(locations[task.country]).map((state) => (
+                      <MenuItem key={state} value={state}>{state}</MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} sm={6} sx={{minWidth: '245px'}}>
+                  <TextField 
+                    select
+                    required
+                    fullWidth
+                    label="City"
+                    name="city"
+                    value={task.city}
+                    onChange={handleChange}
+                    error={!!errors.city}
+                    helperText={errors.city}
+                    disabled={!task.state}
+                  >
+                    {task.country && task.state && locations[task.country][task.state].map((city) => (
+                      <MenuItem key={city} value={city}>{city}</MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
               </Grid>
 
               <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mt: 4, mb: 1 }}>Task Info</Typography>
               <Divider sx={{ mb: 2 }} />
 
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{minWidth: '245px'}}>
                   <TextField
-                    required
                     fullWidth
+                    required
                     label="Task Name"
                     name="taskName"
                     value={task.taskName}
@@ -150,10 +235,10 @@ function TaskForm({ onSubmit, taskToEdit }) {
                     helperText={errors.taskName}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{minWidth: '245px'}}>
                   <TextField
-                    required
                     fullWidth
+                    required
                     label="Assigned By"
                     name="assignedBy"
                     value={task.assignedBy}
@@ -162,7 +247,6 @@ function TaskForm({ onSubmit, taskToEdit }) {
                     helperText={errors.assignedBy}
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     label="Start Date"
@@ -170,15 +254,14 @@ function TaskForm({ onSubmit, taskToEdit }) {
                     onChange={(date) => handleDateChange("startDate", date)}
                     slotProps={{
                       textField: {
-                        required: true,
                         fullWidth: true,
+                        required: true,
                         error: !!errors.startDate,
-                        helperText: errors.startDate,
+                        helperText: errors.startDate
                       }
                     }}
                   />
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                   <DatePicker
                     label="Deadline"
@@ -186,21 +269,20 @@ function TaskForm({ onSubmit, taskToEdit }) {
                     onChange={(date) => handleDateChange("deadline", date)}
                     slotProps={{
                       textField: {
-                        required: true,
                         fullWidth: true,
+                        required: true,
                         error: !!errors.deadline,
-                        helperText: errors.deadline,
+                        helperText: errors.deadline
                       }
                     }}
                   />
                 </Grid>
-
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{minWidth: '245px'}}>
                   <TextField
                     select
+                    fullWidth
                     label="Status"
                     name="status"
-                    fullWidth
                     value={task.status}
                     onChange={handleChange}
                   >
@@ -210,12 +292,7 @@ function TaskForm({ onSubmit, taskToEdit }) {
                 </Grid>
               </Grid>
 
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ mt: 5 }}
-              >
+              <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 5 }}>
                 <Button
                   type="submit"
                   variant="contained"

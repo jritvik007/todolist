@@ -1,11 +1,4 @@
-import {
-  Grid,
-  Paper,
-  Typography,
-  IconButton,
-  useMediaQuery,
-  useTheme
-} from '@mui/material';
+import { Grid, Paper, Typography, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid } from '@mui/x-data-grid';
@@ -47,6 +40,9 @@ function TaskTable() {
     { field: 'assignedBy', headerName: 'Assigned By', flex: 1 },
     { field: 'startDate', headerName: 'Start', flex: 1 },
     { field: 'deadline', headerName: 'Deadline', flex: 1 },
+    { field: 'country', headerName: 'Country', flex: 1 },
+    { field: 'state', headerName: 'State', flex: 1 }, 
+    { field: 'city', headerName: 'City', flex: 1 }, 
     {
       field: 'status',
       headerName: 'Status',
@@ -125,7 +121,6 @@ function TaskTable() {
             pageSize={10}
             rowsPerPageOptions={[5, 10, 25]}
             autoHeight
-            disableColumnResize
             sx={{
               '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: '#f5f5f5',
