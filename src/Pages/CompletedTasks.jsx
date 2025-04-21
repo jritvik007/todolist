@@ -68,7 +68,17 @@ function CompletedTasks() {
     { field: "country", headerName: "Country", flex: 1 },
     { field: "state", headerName: "State", flex: 1 },
     { field: "city", headerName: "City", flex: 1 },
-    { field: "status", headerName: "Status", flex: 1 },
+    { field: "status", headerName: "Status", flex: 1 ,
+      renderCell: (params) => (
+        <span
+          style={{
+            color: "green" , fontWeight: "bold",
+          }}
+        >
+          {params.value}
+        </span>
+      ),
+     },
   ];
 
   return (
