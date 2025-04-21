@@ -143,45 +143,45 @@ function PendingTasks() {
             <Grid container spacing={2}>
             {pendingTasks.map((task) => (
               <Grid item xs={12} sm={6} key={task.id}>
-                <Card variant="outlined" sx={{ boxShadow: 3 }}>
+                <Card sx={{ boxShadow: 3 }}>
                 <CardContent sx={{ margin: 2 }}>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Name:</strong> {task.name}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Email:</strong> {task.email}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Phone:</strong> {task.phone}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Department:</strong> {task.department}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Position:</strong> {task.position}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Country:</strong> {task.country}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>State:</strong> {task.state}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>City:</strong> {task.city}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Task:</strong> {task.taskName}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Assigned By:</strong> {task.assignedBy}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Start Date:</strong> {task.startDate}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Deadline:</strong> {task.deadline}
                 </Typography>
-                <Typography>
+                <Typography fontSize={14}>
                   <strong>Status:</strong>{" "}
                   <span style={{ color: "red" , fontWeight: "bold"}}>{task.status}</span>
                 </Typography>
