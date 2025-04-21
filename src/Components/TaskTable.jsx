@@ -48,7 +48,7 @@ function TaskTable() {
     {
       field: 'status',
       headerName: 'Status',
-      width: 120,
+      width: 100,
       renderCell: (params) => (
         <span
           style={{
@@ -63,7 +63,7 @@ function TaskTable() {
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <>
           <IconButton onClick={() => handleEdit(params.row)} color="primary">
