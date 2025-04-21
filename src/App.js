@@ -16,7 +16,7 @@ function App() {
        fallback={
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' , backgroundColor: '#f5f5f5' }}>
           <CircularProgress color="primary" />
-          <Box sx={{ ml: 2, fontSize: '1.5rem', color: '#333' }}>
+          <Box sx={{ ml: 2, fontSize: '1.5rem', color: 'black' }}>
             Loading ...
           </Box>
         </Box>
