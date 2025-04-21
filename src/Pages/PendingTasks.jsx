@@ -160,7 +160,7 @@ function PendingTasks() {
           {isMobile ? (
             <Grid container spacing={2}>
             {pendingTasks.map((task) => (
-              <Grid item xs={12} sm={6} key={task.id}>
+              <Grid item xs={12} sm={6} key={task.id} sx={{ width: "100%"}}>
                 <Card sx={{ boxShadow: 3 }}>
                 <CardContent sx={{ margin: 2 }}>
                 <Typography fontSize={14}>

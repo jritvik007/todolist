@@ -99,8 +99,8 @@ function TaskTable() {
     <Grid container spacing={2}>
       {isCardView ? (
         tasks.map((task, index) => (
-          <Grid item xs={12} sm={6} key={index}>
-            <Paper sx={{ p: 4 , boxShadow: 3 }}>
+          <Grid item xs={12} sm={6} key={index} sx={{width:"100%"}}>
+            <Paper sx={{ p: 4 , boxShadow: 3  }}>
             {Object.entries(task).map(([key, value]) => {
             if (key === 'id') return null;
              const label = key === 'taskName' ? 'Task' : key.charAt(0).toUpperCase() + key.slice(1);
