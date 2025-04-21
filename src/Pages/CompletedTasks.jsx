@@ -145,43 +145,43 @@ function CompletedTasks() {
                 <Grid item xs={12} sm={6} key={task.id}>
                   <Card variant="outlined">
                   <CardContent>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Name:</strong> {task.name}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Email:</strong> {task.email}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Phone:</strong> {task.phone}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Department:</strong> {task.department}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Position:</strong> {task.position}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Country:</strong> {task.country}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>State:</strong> {task.state}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>City:</strong> {task.city}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Task:</strong> {task.taskName}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Assigned By:</strong> {task.assignedBy}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Start Date:</strong> {task.startDate}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Deadline:</strong> {task.deadline}
                   </Typography>
-                  <Typography variant="subtitle1">
+                  <Typography>
                     <strong>Status:</strong>{" "}
                     <span style={{ color: "green" , fontWeight: "bold"}}>{task.status}</span>
                   </Typography>
