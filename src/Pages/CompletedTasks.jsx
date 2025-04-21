@@ -64,8 +64,26 @@ function CompletedTasks() {
     { field: "position", headerName: "Position", flex: 1 },
     { field: "taskName", headerName: "Task", flex: 1 },
     { field: "assignedBy", headerName: "Assigned By", flex: 1 },
-    { field: "startDate", headerName: "Start Date", flex: 1 },
-    { field: "deadline", headerName: "Deadline", flex: 1 },
+    { field: "startDate", headerName: "Start Date", flex: 1 ,
+      renderCell: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      },
+    },
+    { field: "deadline", headerName: "Deadline", flex: 1 ,
+      renderCell: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      },
+    },
     { field: "country", headerName: "Country", flex: 1 },
     { field: "state", headerName: "State", flex: 1 },
     { field: "city", headerName: "City", flex: 1 },
@@ -177,10 +195,20 @@ function CompletedTasks() {
                     <strong>Assigned By:</strong> {task.assignedBy}
                   </Typography>
                   <Typography fontSize={14}>
-                    <strong>Start Date:</strong> {task.startDate}
-                  </Typography>
-                  <Typography fontSize={14}>
-                    <strong>Deadline:</strong> {task.deadline}
+                  <strong>Start Date:</strong>{" "}
+                   {new Date(task.startDate).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    })}
+                   </Typography>
+                   <Typography fontSize={14}>
+                   <strong>Deadline:</strong>{" "}
+                   {new Date(task.deadline).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    })}
                   </Typography>
                   <Typography fontSize={14}>
                     <strong>Status:</strong>{" "}

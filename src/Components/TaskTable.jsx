@@ -40,8 +40,26 @@ function TaskTable() {
     { field: 'position', headerName: 'Position', flex: 1 },
     { field: 'taskName', headerName: 'Task', flex: 1 },
     { field: 'assignedBy', headerName: 'Assigned By', flex: 1 },
-    { field: 'startDate', headerName: 'Start Date', flex: 1 },
-    { field: 'deadline', headerName: 'Deadline', flex: 1 },
+    { field: 'startDate', headerName: 'Start Date', flex: 1 ,
+      renderCell: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        });
+      },
+    },
+    { field: 'deadline', headerName: 'Deadline', flex: 1 ,
+      renderCell: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        });
+      },
+    },
     { field: 'country', headerName: 'Country', flex: 1 },
     { field: 'state', headerName: 'State', flex: 1 }, 
     { field: 'city', headerName: 'City', flex: 1 }, 
@@ -83,26 +101,38 @@ function TaskTable() {
         tasks.map((task, index) => (
           <Grid item xs={12} sm={6} key={index}>
             <Paper sx={{ p: 4 , boxShadow: 3 }}>
-              {Object.entries(task).map(([key, value]) => {
-                if (key === 'id') return null;
-                const label = key === 'taskName' ? 'Task' : key.charAt(0).toUpperCase() + key.slice(1);
-                if (key === 'status') {
-                  return (
-                    <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
-                      Status:{' '}
-                      <span style={{ color: value === 'Completed' ? 'green' : 'red', fontWeight: 600 }}>
-                        {value}
-                      </span>
-                    </Typography>
-                  );
-                }
-                return (
-                  <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
-                    {label}:{' '}
-                    <span style={{ fontWeight: 400 }}>{value}</span>
-                  </Typography>
-                );
-              })}
+            {Object.entries(task).map(([key, value]) => {
+            if (key === 'id') return null;
+             const label = key === 'taskName' ? 'Task' : key.charAt(0).toUpperCase() + key.slice(1);
+
+             let displayValue = value;
+
+             if (key === 'startDate' || key === 'deadline') {
+             const date = new Date(value);
+             displayValue = date.toLocaleDateString('en-GB', {
+             day: '2-digit',
+             month: 'short',
+             year: 'numeric',
+             });
+             }
+             if (key === 'status') {
+             return (
+             <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
+               Status:{' '}
+              <span style={{ color: value === 'Completed' ? 'green' : 'red', fontWeight: 600 }}>
+              {value}
+             </span>
+             </Typography>
+             );
+             }
+
+             return (
+            <Typography key={key} variant="body2" sx={{ fontWeight: 600 }}>
+            {label}:{' '}
+           <span style={{ fontWeight: 400 }}>{displayValue}</span>
+           </Typography>
+            );
+            })}
               <Typography variant="body2" sx={{ fontWeight: 600, mt: 1 }}>
                 Actions:
                 <IconButton onClick={() => handleEdit(task)} color="primary">
