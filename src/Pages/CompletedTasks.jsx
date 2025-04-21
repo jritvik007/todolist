@@ -194,7 +194,7 @@ function CompletedTasks() {
                 },
                 '& .MuiDataGrid-columnHeaderTitle': {
                 fontWeight: 700,
-              }
+              },
               }}
             />
           )}
