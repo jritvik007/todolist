@@ -204,7 +204,10 @@ function PendingTasks() {
                 },
                 '& .MuiDataGrid-columnHeaderTitle': {
                 fontWeight: 700,
-              }
+              },
+              '& .MuiDataGrid-cell': {
+                backgroundColor: 'skyblue',
+              },
               }}
             />
           )}
