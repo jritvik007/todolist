@@ -252,6 +252,7 @@ function TaskForm({ onSubmit, taskToEdit }) {
                     label="Start Date"
                     value={task.startDate}
                     onChange={(date) => handleDateChange("startDate", date)}
+                    format="dd-MMM-yyyy"
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -267,6 +268,7 @@ function TaskForm({ onSubmit, taskToEdit }) {
                     label="Deadline"
                     value={task.deadline}
                     onChange={(date) => handleDateChange("deadline", date)}
+                    format="dd-MMM-yyyy"
                     slotProps={{
                       textField: {
                         fullWidth: true,
