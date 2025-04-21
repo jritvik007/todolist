@@ -141,11 +141,11 @@ function CompletedTasks() {
         <DrawerHeader />
         <Box sx={{ width: "100%" }}>
           {isMobile ? (
-            <Grid container spacing={2} sx={{ p: 2 }}>
+            <Grid container spacing={2}>
               {completedTasks.map((task) => (
                 <Grid item xs={12} sm={6} key={task.id}>
-                  <Card variant="outlined">
-                  <CardContent>
+                  <Card variant="outlined" sx={{ boxShadow: 3 }}>
+                  <CardContent sx={{ margin: 2 }}>
                   <Typography>
                     <strong>Name:</strong> {task.name}
                   </Typography>
