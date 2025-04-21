@@ -1,15 +1,27 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./Pages/LoginPage";
-import RegisterPage from "./Pages/RegisterPage";
-import Dashboard from "./Components/Dashboard";
-import AddTask from "./Pages/AddTask";
-import CompletedTasks from "./Pages/CompletedTasks";
-import PendingTasks from "./Pages/PendingTasks";
+import { CircularProgress, Box } from "@mui/material";
+const LoginPage = lazy(() => import("./Pages/LoginPage"));
+const RegisterPage = lazy(() => import("./Pages/RegisterPage"));
+const Dashboard = lazy(() => import("./Components/Dashboard"));
+const AddTask = lazy(() => import("./Pages/AddTask"));
+const CompletedTasks = lazy(() => import("./Pages/CompletedTasks"));
+const PendingTasks = lazy(() => import("./Pages/PendingTasks"));
+
 
 function App() {
   return (
     <Router>
+      <Suspense
+       fallback={
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' , backgroundColor: '#f5f5f5' }}>
+          <CircularProgress color="primary" />
+          <Box sx={{ ml: 2, fontSize: '1.5rem', color: '#333' }}>
+            Loading ...
+          </Box>
+        </Box>
+       }
+        >
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
@@ -19,7 +31,8 @@ function App() {
         <Route path="/completed" element={<CompletedTasks />} />
         <Route path="/pending" element={<PendingTasks />} />
       </Routes>
-    </Router>
+      </Suspense>
+    </Router> 
   );
 }
 

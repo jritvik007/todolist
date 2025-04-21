@@ -13,6 +13,7 @@ const AddTask = () => {
       const updatedTasks = existingTasks.map((task) =>
         task.id === taskToEdit.id ? newTask : task
       );
+      console.log('Updated tasks (edit):', updatedTasks);
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     } else {
       localStorage.setItem('tasks', JSON.stringify([...existingTasks, newTask]));

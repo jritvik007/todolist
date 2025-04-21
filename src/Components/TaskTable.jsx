@@ -4,9 +4,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 function TaskTable() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [tasks, setTasks] = useState([]);
 
   const theme = useTheme();
@@ -16,9 +19,8 @@ function TaskTable() {
 
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const tasksWithIds = storedTasks.map((task, index) => ({ ...task, id: index }));
-    setTasks(tasksWithIds);
-  }, []);
+    setTasks(storedTasks);
+  }, [location]);
 
   const handleDelete = (id) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
