@@ -130,7 +130,6 @@ function TaskTable() {
               },
               '& .MuiDataGrid-cell': {
                 textAlign: 'left',
-                backgroundColor: 'skyblue',
               },
               '& .MuiDataGrid-columnHeaderTitle': {
                 fontWeight: 700,
