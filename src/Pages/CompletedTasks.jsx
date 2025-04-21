@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, CssBaseline, AppBar as MuiAppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem,
-         ListItemButton, ListItemIcon, ListItemText, useMediaQuery, Card, CardContent, Grid } from "@mui/material";
+         ListItemButton, ListItemIcon, ListItemText, useMediaQuery, Card, CardContent, Grid, 
+    } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -187,6 +188,7 @@ function CompletedTasks() {
                   </Typography>
                   </CardContent>
                   </Card>
+
                 </Grid>
               ))}
             </Grid>

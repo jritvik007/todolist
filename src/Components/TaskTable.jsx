@@ -40,7 +40,7 @@ function TaskTable() {
     { field: 'position', headerName: 'Position', flex: 1 },
     { field: 'taskName', headerName: 'Task', flex: 1 },
     { field: 'assignedBy', headerName: 'Assigned By', flex: 1 },
-    { field: 'startDate', headerName: 'Start', flex: 1 },
+    { field: 'startDate', headerName: 'Start Date', flex: 1 },
     { field: 'deadline', headerName: 'Deadline', flex: 1 },
     { field: 'country', headerName: 'Country', flex: 1 },
     { field: 'state', headerName: 'State', flex: 1 }, 
