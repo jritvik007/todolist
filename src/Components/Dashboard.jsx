@@ -156,21 +156,21 @@ function Dashboard() {
         setFilterField(e.target.value);
         setFilterValue("");
         }}
-       style={{  paddingTop: '10px', paddingBottom: '10px', border: '3px solid #ccc', borderRadius: '4px'}}
-     >
-     <option value="">Filter by...</option>
-     <option value="name">Name</option>
-     <option value="email">Email</option>
-     <option value="phone">Phone</option>
-     <option value="department">Department</option>
-     <option value="position">Position</option>
-     <option value="taskName">Task Name</option>
-     <option value="assignedBy">Assigned By</option>
-     <option value="country">Country</option>
-     <option value="state">State</option>
-     <option value="city">City</option>
-     <option value="status">Status</option>
-     </select>
+        style={{  paddingTop: '10px', paddingBottom: '10px', border: '3px solid #ccc', borderRadius: '4px' , boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
+        >
+        <option value="">Filter by...</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="phone">Phone</option>
+        <option value="department">Department</option>
+        <option value="position">Position</option>
+        <option value="taskName">Task Name</option>
+        <option value="assignedBy">Assigned By</option>
+        <option value="country">Country</option>
+        <option value="state">State</option>
+        <option value="city">City</option>
+        <option value="status">Status</option>
+        </select>
 
         {filterField && (
         <input
@@ -178,7 +178,7 @@ function Dashboard() {
         placeholder={`Enter ${filterField}`}
         value={filterValue}
         onChange={(e) => setFilterValue(e.target.value)}
-        style={{ padding: '10px',  width: '200px',  border: '3px solid #ccc',  borderRadius: '4px' }}
+        style={{ padding: '10px',  width: '200px',  border: '3px solid #ccc',  borderRadius: '4px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
          />
          )}
         </Box>

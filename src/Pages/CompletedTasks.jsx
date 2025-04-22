@@ -224,12 +224,11 @@ function CompletedTasks() {
             <DataGrid
               rows={completedTasks}
               columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10, 25, 50]}
               autoHeight
               disableColumnMenu
               disableColumnSorting
               disableColumnResize
+              hideFooter
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
                   backgroundColor: "#f5f5f5",

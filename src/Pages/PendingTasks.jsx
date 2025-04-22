@@ -222,12 +222,11 @@ function PendingTasks() {
             <DataGrid
               rows={pendingTasks}
               columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10, 25, 50]}
               autoHeight
               disableColumnMenu
               disableColumnSorting
               disableColumnResize
+              hideFooter
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
                   backgroundColor: "#f5f5f5",

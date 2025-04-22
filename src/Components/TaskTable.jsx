@@ -166,12 +166,11 @@ function TaskTable({ filterField, filterValue }) {
           <DataGrid
             rows={filteredTasks}
             columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[5, 10, 25]}
             autoHeight
             disableColumnMenu
             disableColumnSorting
             disableColumnResize
+            hideFooter
             sx={{
               '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: '#f5f5f5',
