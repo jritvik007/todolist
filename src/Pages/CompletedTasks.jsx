@@ -227,6 +227,9 @@ function CompletedTasks() {
               pageSize={10}
               rowsPerPageOptions={[10, 25, 50]}
               autoHeight
+              disableColumnMenu
+              disableColumnSorting
+              disableColumnResize
               sx={{
                 "& .MuiDataGrid-columnHeaders": {
                   backgroundColor: "#f5f5f5",

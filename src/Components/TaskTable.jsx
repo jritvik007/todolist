@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 
-function TaskTable() {
+function TaskTable({ filterField, filterValue }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -21,6 +22,21 @@ function TaskTable() {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(storedTasks);
   }, [location]);
+
+  useEffect(() => {
+    let filtered = [...tasks];
+  
+    if (filterField && filterValue) {
+      const value = filterValue.toLowerCase();
+      filtered = filtered.filter(task => {
+        const taskFieldValue = task[filterField];
+        return typeof taskFieldValue === "string" && taskFieldValue.toLowerCase().includes(value);
+      });
+    }
+  
+    setFilteredTasks(filtered);
+  }, [filterField, filterValue, tasks]);
+  
 
   const handleDelete = (id) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
@@ -40,7 +56,7 @@ function TaskTable() {
     { field: 'position', headerName: 'Position', flex: 1 },
     { field: 'taskName', headerName: 'Task', flex: 1 },
     { field: 'assignedBy', headerName: 'Assigned By', flex: 1 },
-    { field: 'startDate', headerName: 'Start Date', flex: 1 ,
+    { field: 'startDate', headerName: 'Start Date', width: 100 ,
       renderCell: (params) => {
         const date = new Date(params.value);
         return date.toLocaleDateString('en-GB', {
@@ -50,7 +66,7 @@ function TaskTable() {
         });
       },
     },
-    { field: 'deadline', headerName: 'Deadline', flex: 1 ,
+    { field: 'deadline', headerName: 'Deadline', width: 100 ,
       renderCell: (params) => {
         const date = new Date(params.value);
         return date.toLocaleDateString('en-GB', {
@@ -98,7 +114,7 @@ function TaskTable() {
   return (
     <Grid container spacing={2}>
       {isCardView ? (
-        tasks.map((task, index) => (
+        filteredTasks.map((task, index) => (
           <Grid item xs={12} sm={6} key={index} sx={{width:"100%"}}>
             <Paper sx={{ p: 4 , boxShadow: 3  }}>
             {Object.entries(task).map(([key, value]) => {
@@ -142,17 +158,20 @@ function TaskTable() {
                   <DeleteIcon />
                 </IconButton>
               </Typography>
-            </Paper>
+            </Paper> 
           </Grid>
         ))
       ) : (
         <div style={{ height: 600, width: '100%' }}>
           <DataGrid
-            rows={tasks}
+            rows={filteredTasks}
             columns={columns}
             pageSize={10}
             rowsPerPageOptions={[5, 10, 25]}
             autoHeight
+            disableColumnMenu
+            disableColumnSorting
+            disableColumnResize
             sx={{
               '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: '#f5f5f5',

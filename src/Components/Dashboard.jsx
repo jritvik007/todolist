@@ -23,6 +23,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { ThemeModeContext } from "../Context/ThemeContext";
 
+
 const drawerWidth = 240;
 
 const Main = styled("main")(() => ({
@@ -48,6 +49,9 @@ function Dashboard() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
   const {mode , toggleTheme} = useContext(ThemeModeContext);
+  const [filterField, setFilterField] = useState(""); 
+  const [filterValue, setFilterValue] = useState(""); 
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -143,10 +147,41 @@ function Dashboard() {
           </ListItem>
         </List>
       </Drawer>
-
       <Main>
-        <DrawerHeader />
-        <TaskTable />
+      <DrawerHeader />
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+       <select
+        value={filterField}
+        onChange={(e) => {
+        setFilterField(e.target.value);
+        setFilterValue("");
+        }}
+       style={{  paddingTop: '10px', paddingBottom: '10px', border: '3px solid #ccc', borderRadius: '4px'}}
+     >
+     <option value="">Filter by...</option>
+     <option value="name">Name</option>
+     <option value="email">Email</option>
+     <option value="phone">Phone</option>
+     <option value="department">Department</option>
+     <option value="position">Position</option>
+     <option value="taskName">Task Name</option>
+     <option value="assignedBy">Assigned By</option>
+     <option value="country">Country</option>
+     <option value="state">State</option>
+     <option value="city">City</option>
+     </select>
+
+        {filterField && (
+        <input
+        type="text"
+        placeholder={`Enter ${filterField}`}
+        value={filterValue}
+        onChange={(e) => setFilterValue(e.target.value)}
+        style={{ padding: '10px',  width: '200px',  border: '3px solid #ccc',  borderRadius: '4px' }}
+         />
+         )}
+        </Box>
+        <TaskTable filterField={filterField} filterValue={filterValue} />
         <Fab
           variant="extended" color="primary" size="large"
           onClick={() => navigate("/add")}
