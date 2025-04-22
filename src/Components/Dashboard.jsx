@@ -169,6 +169,7 @@ function Dashboard() {
      <option value="country">Country</option>
      <option value="state">State</option>
      <option value="city">City</option>
+     <option value="status">Status</option>
      </select>
 
         {filterField && (
