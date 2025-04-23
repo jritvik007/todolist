@@ -1,4 +1,5 @@
 import { Grid, Paper, Typography, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid } from '@mui/x-data-grid';
@@ -7,11 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 
+
 function TaskTable({ filterField, filterValue }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -38,11 +43,18 @@ function TaskTable({ filterField, filterValue }) {
   }, [filterField, filterValue, tasks]);
   
 
-  const handleDelete = (id) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
+  const confirmDelete = (id) => {
+    setTaskToDelete(id);
+    setOpenDialog(true);
+  };
+  
+  const handleDeleteConfirmed = () => {
+    const updatedTasks = tasks.filter((task) => task.id !== taskToDelete);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     setTasks(updatedTasks);
+    setOpenDialog(false);
   };
+  
 
   const handleEdit = (task) => {
     navigate('/add', { state: task });
@@ -103,7 +115,7 @@ function TaskTable({ filterField, filterValue }) {
           <IconButton onClick={() => handleEdit(params.row)} color="primary">
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => handleDelete(params.row.id)} color="secondary">
+          <IconButton onClick={() => confirmDelete(params.row.id)} color="secondary">
             <DeleteIcon />
           </IconButton>
         </>
@@ -112,6 +124,7 @@ function TaskTable({ filterField, filterValue }) {
   ];
 
   return (
+    <>
     <Grid container spacing={2}>
       {isCardView ? (
         filteredTasks.map((task, index) => (
@@ -154,11 +167,11 @@ function TaskTable({ filterField, filterValue }) {
                 <IconButton onClick={() => handleEdit(task)} color="primary">
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => handleDelete(task.id)} color="secondary">
+                <IconButton onClick={() => confirmDelete(task.id)} color="secondary">
                   <DeleteIcon />
                 </IconButton>
               </Typography>
-            </Paper> 
+            </Paper>
           </Grid>
         ))
       ) : (
@@ -191,6 +204,26 @@ function TaskTable({ filterField, filterValue }) {
         </div>
       )}
     </Grid>
+    <Dialog
+    open={openDialog}
+    onClose={() => setOpenDialog(false)}
+    >
+    <DialogTitle>Confirm Deletion</DialogTitle>
+    <DialogContent>
+      <DialogContentText>
+        Are you sure you want to delete this task?
+      </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={() => setOpenDialog(false)} color="primary">
+        No
+      </Button>
+      <Button onClick={handleDeleteConfirmed} color="secondary">
+        Yes
+      </Button>
+    </DialogActions>
+    </Dialog>
+   </>
   );
 }
 
