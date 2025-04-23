@@ -215,10 +215,10 @@ function TaskTable({ filterField, filterValue }) {
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={() => setOpenDialog(false)} color="primary">
+      <Button onClick={() => setOpenDialog(false)} color="primary" sx={{ fontWeight: 'bold' }}>
         No
       </Button>
-      <Button onClick={handleDeleteConfirmed} color="secondary">
+      <Button onClick={handleDeleteConfirmed} color="secondary" sx={{ fontWeight: 'bold' }}>
         Yes
       </Button>
     </DialogActions>
