@@ -21,8 +21,8 @@ function RegisterPage() {
       return setError("Invalid email format");
     }
 
-    if (password.length < 6) {
-      return setError("Password must be at least 6 characters");
+    if (password.length < 8 || password.length > 15) {
+      return setError("Password must be between 8 and 15 characters");
     }
 
     if (password !== confirmPassword) {
@@ -36,7 +36,7 @@ function RegisterPage() {
 
     users.push({ email, password });
     localStorage.setItem("users", JSON.stringify(users));
-    navigate("/login", { state: { email, password } });
+    navigate("/login", { state: { email }});
   };
 
   return (
